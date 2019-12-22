@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { select } from "../../../store/modules/date";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
@@ -15,8 +17,8 @@ const StyledCalendar = styled.div`
   margin: 20px;
   padding: 20px;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.4);
+  border-radius: 16px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
   text-align: center;
 `;
 
@@ -69,10 +71,22 @@ const StyledTd = styled.td`
   font-size: 14px;
   border-right: 1px solid ${borderColor};
   border-bottom: 1px solid ${borderColor};
+  &:first-child span {
+    color: #cc3d3d;
+  }
+
+  &:last-child span {
+    color: #4641d9;
+  }
 `;
 
 const ViewComponent = props => {
-  const { today, currentMonth, currentYear, previous, next } = props;
+  const { currentMonth, currentYear, previous, next } = props;
+
+  const dispatch = useDispatch();
+  const selectCalendar = (currentDay, currentWeek, currentMonth, currentYear) =>
+    dispatch(select(currentDay, currentWeek, currentMonth, currentYear));
+
   let firstDay = new Date(currentYear, currentMonth).getDay();
   let daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
   const items = [];
@@ -82,9 +96,15 @@ const ViewComponent = props => {
     const dummy = [];
     let did = false;
     for (let j = 0; j < 7; j++) {
-      let innerdate = date;
-      const my = () => {
-        console.log(innerdate);
+      let innerDate = date;
+      let innerWeek = j;
+      const innerSelect = () => {
+        selectCalendar({
+          currentDay: innerDate,
+          currentMonth: currentMonth + 1,
+          currentWeek: innerWeek,
+          currentYear: currentYear
+        });
       };
       if (i === 0 && j < firstDay) {
         dummy.push(<StyledTd></StyledTd>);
@@ -93,7 +113,11 @@ const ViewComponent = props => {
         end = true;
       } else {
         did = true;
-        dummy.push(<StyledTd onClick={() => my()}>{date}</StyledTd>);
+        dummy.push(
+          <StyledTd onClick={() => innerSelect()}>
+            <span>{date}</span>
+          </StyledTd>
+        );
         date++;
       }
     }
