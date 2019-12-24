@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import TodoHead from "./TodoHead";
 import TodoCreate from "./TodoCreate";
+import TodoList from "./TodoList";
 
 const TodoTemplateBlock = styled.div`
   display: flex;
@@ -19,8 +20,9 @@ const TodoTemplateBlock = styled.div`
 const ViewComponent = () => {
   return (
     <TodoTemplateBlock>
-      <TodoHead></TodoHead>
-      <TodoCreate></TodoCreate>
+      <TodoHead />
+      <TodoList />
+      <TodoCreate />
     </TodoTemplateBlock>
   );
 };

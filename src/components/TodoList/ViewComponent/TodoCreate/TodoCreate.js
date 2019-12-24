@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { todos, createTodo } from "../../../../store/modules/todolist";
 import styled, { css } from "styled-components";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -78,7 +80,37 @@ const Input = styled.input`
 const TodoCreate = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-
+  let { id, currentDay, currentMonth, currentYear } = useSelector(state => ({
+    id: state.todolist.id,
+    currentDay: state.date.currentDay,
+    currentMonth: state.date.currentMonth,
+    currentYear: state.date.currentYear
+  }));
+  const dispatch = useDispatch();
+  const todo = {
+    id: id,
+    year: currentYear,
+    month: currentMonth,
+    day: currentDay,
+    text: value,
+    done: false
+  };
+  const filteredTodos = (currentDay, currentMonth, currentYear) =>
+    dispatch(todos(currentDay, currentMonth, currentYear));
+  const _createTodo = todo => dispatch(createTodo(todo));
+  const onChange = e => setValue(e.target.value);
+  const onSubmit = e => {
+    const next = id++;
+    e.preventDefault(); //새로고침 방지
+    _createTodo({ todo: todo });
+    filteredTodos({
+      currentDay: currentDay,
+      currentMonth: currentMonth,
+      currentYear: currentYear
+    });
+    setValue("");
+    setOpen(false);
+  };
   const onToggle = () => {
     setOpen(!open);
   };
@@ -86,10 +118,11 @@ const TodoCreate = () => {
     <>
       {open && (
         <InsertFormPositioner>
-          <InsertForm>
+          <InsertForm onSubmit={onSubmit}>
             <Input
               autoFocus
               placeholder="할 일을 입력 후, Enter 를 누르세요"
+              onChange={onChange}
               value={value}
             />
           </InsertForm>

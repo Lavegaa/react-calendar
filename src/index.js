@@ -10,3 +10,11 @@ ReactDOM.render(<App />, document.getElementById("root"));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+// if (
+//     todo.day === action.payload.currentDay &&
+//     todo.month === action.payload.currentMonth &&
+//     todo.year === action.payload.currentYear
+//   ) {
+//     return todo;
+//   }
