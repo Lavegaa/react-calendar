@@ -5,11 +5,15 @@ const TODOS = "todolist/TODOS";
 const CREATE_TODO = "todolist/CREATE_TODO";
 const REMOVE_TODO = "todolist/REMOVE_TODO";
 const TOGGLE_TODO = "todolist/TOGGLE_TODO";
+const TODOS_IN_DAY = "todolist/TODOS_IN_DAY";
+const TODOS_IN_MONTH = "todolist/TODOS_IN_MONTH";
 //action craetor
 export const todos = createAction(TODOS);
 export const createTodo = createAction(CREATE_TODO);
 export const removeTodo = createAction(REMOVE_TODO);
 export const toggleTodo = createAction(TOGGLE_TODO);
+export const todosInDay = createAction(TODOS_IN_DAY);
+export const todosInMonth = createAction(TODOS_IN_MONTH);
 //initial state
 const initialState = {
   todos: [
@@ -47,7 +51,11 @@ const initialState = {
     }
   ],
   filteredTodos: [{}],
-  id: 5
+  id: 5,
+  todosInDayTo: 0,
+  todosInDayDo: 0,
+  todosInMonthTo: 0,
+  todosInMonthDo: 0
 };
 
 //reducer
@@ -84,6 +92,18 @@ export default handleActions(
       return {
         ...state,
         todos: state.todos.filter(todo => todo.id !== action.payload.id)
+      };
+    },
+    [TODOS_IN_DAY]: (state, action) => {
+      let _todosInDayTo = 0;
+      let _todosInDayDo = 0;
+      state.filteredTodos.map(todo => {
+        todo.done ? _todosInDayDo++ : _todosInDayTo++;
+      });
+      return {
+        ...state,
+        todosInDayTo: _todosInDayTo,
+        todosInDayDo: _todosInDayDo
       };
     }
   },

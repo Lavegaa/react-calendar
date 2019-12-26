@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { select } from "../../../store/modules/date";
+import { todosInDay, todos } from "../../../store/modules/todolist";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
@@ -80,13 +81,46 @@ const StyledTd = styled.td`
   }
 `;
 
+const CalendarTodo = props => {
+  const { _to, _do } = props;
+  return (
+    <div>
+      할일:{_to} 한일:{_do}
+    </div>
+  );
+};
+
 const ViewComponent = props => {
   const { currentMonth, currentYear, previous, next } = props;
 
   const dispatch = useDispatch();
   const selectCalendar = (currentDay, currentWeek, currentMonth, currentYear) =>
     dispatch(select(currentDay, currentWeek, currentMonth, currentYear));
-
+  const { todosInDayTo, todosInDayDo, filteredTodos } = useSelector(state => ({
+    todosInDayTo: state.todolist.todosInDayTo,
+    todosInDayDo: state.todolist.todosInDayDo,
+    filteredTodos: state.todolist.filteredTodos
+  }));
+  const _todos = (currentDay, currentMonth, currentYear) =>
+    dispatch(todos(currentDay, currentMonth, currentYear));
+  const todoArray = [];
+  const _todosInDay = () => dispatch(todosInDay());
+  useEffect(() => {
+    for (let m = 0; m < 31; m++) {
+      _todos({
+        currentDay: m,
+        currentMonth: currentMonth + 1,
+        currentYear: currentYear
+      });
+      _todosInDay();
+      console.log(todosInDayTo, todosInDayDo);
+      const today = {
+        to: todosInDayTo,
+        do: todosInDayDo
+      };
+      todoArray.push(today);
+    }
+  }, [currentMonth, currentYear]);
   let firstDay = new Date(currentYear, currentMonth).getDay();
   let daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
   const items = [];
@@ -116,6 +150,7 @@ const ViewComponent = props => {
         dummy.push(
           <StyledTd onClick={() => innerSelect()}>
             <span>{date}</span>
+            <CalendarTodo _to="3" _do="5" />
           </StyledTd>
         );
         date++;
