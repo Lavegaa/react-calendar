@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { select } from "../../../store/modules/date";
@@ -96,15 +96,21 @@ const ViewComponent = props => {
   const dispatch = useDispatch();
   const selectCalendar = (currentDay, currentWeek, currentMonth, currentYear) =>
     dispatch(select(currentDay, currentWeek, currentMonth, currentYear));
-  const { todosInDayTo, todosInDayDo, filteredTodos } = useSelector(state => ({
-    todosInDayTo: state.todolist.todosInDayTo,
-    todosInDayDo: state.todolist.todosInDayDo,
-    filteredTodos: state.todolist.filteredTodos
-  }));
-  const _todos = (currentDay, currentMonth, currentYear) =>
-    dispatch(todos(currentDay, currentMonth, currentYear));
+  const { todosInDayTo, todosInDayDo, filteredTodos, todoss } = useSelector(
+    state => ({
+      todosInDayTo: state.todolist.todosInDayTo,
+      todosInDayDo: state.todolist.todosInDayDo,
+      filteredTodos: state.todolist.filteredTodos,
+      todoss: state.todolist.todos
+    })
+  );
+  const _todos = useCallback(
+    (currentDay, currentMonth, currentYear) =>
+      dispatch(todos(currentDay, currentMonth, currentYear)),
+    []
+  );
   const todoArray = [];
-  const _todosInDay = () => dispatch(todosInDay());
+  const _todosInDay = useCallback(() => dispatch(todosInDay()), []);
   useEffect(() => {
     for (let m = 0; m < 31; m++) {
       _todos({
@@ -119,8 +125,11 @@ const ViewComponent = props => {
         do: todosInDayDo
       };
       todoArray.push(today);
+      console.log("filteredTodos", filteredTodos);
     }
+    console.log(todoss);
   }, [currentMonth, currentYear]);
+
   let firstDay = new Date(currentYear, currentMonth).getDay();
   let daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
   const items = [];
