@@ -1,16 +1,9 @@
-import React, { useEffect, useCallback } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { select } from "../../../store/modules/date";
-import { todosInDay, todos } from "../../../store/modules/todolist";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 const borderColor = "#D5D5D5";
-
-const Todos = () => {
-  return <div>to:2, do:3</div>;
-};
 
 const StyledCalendar = styled.div`
   float: left;
@@ -85,51 +78,19 @@ const CalendarTodo = props => {
   const { _to, _do } = props;
   return (
     <div>
-      할일:{_to} 한일:{_do}
+      to:{_to} do:{_do}
     </div>
   );
 };
 
-const ViewComponent = props => {
-  const { currentMonth, currentYear, previous, next } = props;
-
-  const dispatch = useDispatch();
-  const selectCalendar = (currentDay, currentWeek, currentMonth, currentYear) =>
-    dispatch(select(currentDay, currentWeek, currentMonth, currentYear));
-  const { todosInDayTo, todosInDayDo, filteredTodos, todoss } = useSelector(
-    state => ({
-      todosInDayTo: state.todolist.todosInDayTo,
-      todosInDayDo: state.todolist.todosInDayDo,
-      filteredTodos: state.todolist.filteredTodos,
-      todoss: state.todolist.todos
-    })
-  );
-  const _todos = useCallback(
-    (currentDay, currentMonth, currentYear) =>
-      dispatch(todos(currentDay, currentMonth, currentYear)),
-    []
-  );
-  const todoArray = [];
-  const _todosInDay = useCallback(() => dispatch(todosInDay()), []);
-  useEffect(() => {
-    for (let m = 0; m < 31; m++) {
-      _todos({
-        currentDay: m,
-        currentMonth: currentMonth + 1,
-        currentYear: currentYear
-      });
-      _todosInDay();
-      console.log(todosInDayTo, todosInDayDo);
-      const today = {
-        to: todosInDayTo,
-        do: todosInDayDo
-      };
-      todoArray.push(today);
-      console.log("filteredTodos", filteredTodos);
-    }
-    console.log(todoss);
-  }, [currentMonth, currentYear]);
-
+const ViewComponent = ({
+  currentMonth,
+  currentYear,
+  previous,
+  next,
+  selectCalendar,
+  dayTodos
+}) => {
   let firstDay = new Date(currentYear, currentMonth).getDay();
   let daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
   const items = [];
@@ -159,7 +120,10 @@ const ViewComponent = props => {
         dummy.push(
           <StyledTd onClick={() => innerSelect()}>
             <span>{date}</span>
-            <CalendarTodo _to="3" _do="5" />
+            <CalendarTodo
+              _to={dayTodos[innerDate].to}
+              _do={dayTodos[innerDate].do}
+            />
           </StyledTd>
         );
         date++;

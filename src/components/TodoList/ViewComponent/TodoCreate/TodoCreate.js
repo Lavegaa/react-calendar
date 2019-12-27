@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { todos, createTodo } from "../../../../store/modules/todolist";
+import {
+  todos,
+  createTodo,
+  dayTodolist
+} from "../../../../store/modules/todolist";
 import styled, { css } from "styled-components";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -95,19 +99,21 @@ const TodoCreate = () => {
     text: value,
     done: false
   };
-  const filteredTodos = (currentDay, currentMonth, currentYear) =>
-    dispatch(todos(currentDay, currentMonth, currentYear));
-  const _createTodo = todo => dispatch(createTodo(todo));
   const onChange = e => setValue(e.target.value);
   const onSubmit = e => {
     const next = id++;
     e.preventDefault(); //새로고침 방지
-    _createTodo({ todo: todo });
-    filteredTodos({
-      currentDay: currentDay,
-      currentMonth: currentMonth,
-      currentYear: currentYear
-    });
+    dispatch(createTodo({ todo: todo }));
+    dispatch(
+      todos({
+        currentDay: currentDay,
+        currentMonth: currentMonth,
+        currentYear: currentYear
+      })
+    );
+    dispatch(
+      dayTodolist({ currentMonth: currentMonth - 1, currentYear: currentYear })
+    );
     setValue("");
     setOpen(false);
   };

@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   toggleTodo,
   removeTodo,
-  todos
+  todos,
+  dayTodolist
 } from "../../../../store/modules/todolist";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DoneIcon from "@material-ui/icons/Done";
@@ -85,6 +86,9 @@ const TodoItem = props => {
       currentMonth: currentMonth,
       currentYear: currentYear
     });
+    dispatch(
+      dayTodolist({ currentMonth: currentMonth - 1, currentYear: currentYear })
+    );
   };
   const handleRemove = () => {
     _removeTodo({
@@ -95,6 +99,9 @@ const TodoItem = props => {
       currentMonth: currentMonth,
       currentYear: currentYear
     });
+    dispatch(
+      dayTodolist({ currentMonth: currentMonth - 1, currentYear: currentYear })
+    );
   };
   return (
     <TodoItemBlock>
