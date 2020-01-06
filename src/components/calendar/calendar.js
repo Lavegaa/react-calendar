@@ -27,17 +27,11 @@ const Calendar = () => {
   const next = () => {
     setCurrentYear(currentMonth === 11 ? currentYear + 1 : currentYear);
     setCurrentMonth((currentMonth + 1) % 12);
-    // dispatch(
-    //   dayTodolist({ currentMonth: currentMonth, currentYear: currentYear })
-    // );
   };
 
   const previous = () => {
     setCurrentYear(currentMonth === 0 ? currentYear - 1 : currentYear);
     setCurrentMonth(currentMonth === 0 ? 11 : currentMonth - 1);
-    // dispatch(
-    //   dayTodolist({ currentMonth: currentMonth, currentYear: currentYear })
-    // );
   };
   return (
     <ViewComponent

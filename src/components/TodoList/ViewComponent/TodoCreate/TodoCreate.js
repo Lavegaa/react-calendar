@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  todos,
-  createTodo,
-  dayTodolist
-} from "../../../../store/modules/todolist";
+import React from "react";
+import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -81,64 +76,54 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
-const TodoCreate = () => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-  let { id, currentDay, currentMonth, currentYear } = useSelector(state => ({
-    id: state.todolist.id,
-    currentDay: state.date.currentDay,
-    currentMonth: state.date.currentMonth,
-    currentYear: state.date.currentYear
-  }));
-  const dispatch = useDispatch();
-  const todo = {
-    id: id,
-    year: currentYear,
-    month: currentMonth,
-    day: currentDay,
-    text: value,
-    done: false
-  };
-  const onChange = e => setValue(e.target.value);
-  const onSubmit = e => {
-    const next = id++;
-    e.preventDefault(); //새로고침 방지
-    dispatch(createTodo({ todo: todo }));
-    dispatch(
-      todos({
-        currentDay: currentDay,
-        currentMonth: currentMonth,
-        currentYear: currentYear
-      })
-    );
-    dispatch(
-      dayTodolist({ currentMonth: currentMonth - 1, currentYear: currentYear })
-    );
-    setValue("");
-    setOpen(false);
-  };
-  const onToggle = () => {
-    setOpen(!open);
-  };
+const TodoCreate = ({
+  open,
+  value,
+  handleChange,
+  handleSubmit,
+  handleToggle
+}) => {
   return (
     <>
       {open && (
         <InsertFormPositioner>
-          <InsertForm onSubmit={onSubmit}>
+          <InsertForm onSubmit={handleSubmit}>
             <Input
               autoFocus
               placeholder="할 일을 입력 후, Enter 를 누르세요"
-              onChange={onChange}
+              onChange={handleChange}
               value={value}
             />
           </InsertForm>
         </InsertFormPositioner>
       )}
-      <CircleButton onClick={onToggle} open={open}>
+      <CircleButton onClick={handleToggle} open={open}>
         <AddIcon />
       </CircleButton>
     </>
   );
+};
+
+TodoCreate.propTypes = {
+  open: PropTypes.bool,
+  value: PropTypes.string,
+  handleChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  handleToggle: PropTypes.func
+};
+
+TodoCreate.defaultProps = {
+  open: false,
+  value: "",
+  handleChange: () => {
+    console.log("handleChange is null.");
+  },
+  handleSubmit: () => {
+    console.log("handleChange is null.");
+  },
+  handleToggle: () => {
+    console.log("handleChange is null.");
+  }
 };
 
 export default TodoCreate;

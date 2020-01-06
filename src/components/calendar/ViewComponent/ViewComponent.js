@@ -74,11 +74,10 @@ const StyledTd = styled.td`
   }
 `;
 
-const CalendarTodo = props => {
-  const { _to, _do } = props;
+const CalendarTodo = ({ ToDay, DoDay }) => {
   return (
     <div>
-      to:{_to} do:{_do}
+      to:{ToDay} do:{DoDay}
     </div>
   );
 };
@@ -97,7 +96,7 @@ const ViewComponent = ({
   let date = 1;
   let end = false;
   for (let i = 0; i < 6; i++) {
-    const dummy = [];
+    const weekly = [];
     let did = false;
     for (let j = 0; j < 7; j++) {
       let innerDate = date;
@@ -111,19 +110,21 @@ const ViewComponent = ({
         });
       };
       if (i === 0 && j < firstDay) {
-        dummy.push(<StyledTd></StyledTd>);
+        weekly.push(<StyledTd></StyledTd>);
       } else if (date > daysInMonth) {
-        dummy.push(<StyledTd></StyledTd>);
+        weekly.push(<StyledTd></StyledTd>);
         end = true;
       } else {
         did = true;
-        dummy.push(
+        weekly.push(
           <StyledTd onClick={() => innerSelect()}>
             <span>{date}</span>
-            <CalendarTodo
-              _to={dayTodos[innerDate].to}
-              _do={dayTodos[innerDate].do}
-            />
+            {dayTodos[innerDate].to + dayTodos[innerDate].to !== 0 && (
+              <CalendarTodo
+                ToDay={dayTodos[innerDate].to}
+                DoDay={dayTodos[innerDate].do}
+              />
+            )}
           </StyledTd>
         );
         date++;
@@ -132,7 +133,7 @@ const ViewComponent = ({
     if (end && did === false) {
       break;
     }
-    items.push(<tr valign="top">{dummy}</tr>);
+    items.push(<tr valign="top">{weekly}</tr>);
   }
 
   return (

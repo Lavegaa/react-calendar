@@ -1,12 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  toggleTodo,
-  removeTodo,
-  todos,
-  dayTodolist
-} from "../../../../store/modules/todolist";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DoneIcon from "@material-ui/icons/Done";
 
@@ -64,55 +58,38 @@ const Text = styled.div`
       color: #ced4da;
     `}
 `;
-const TodoItem = props => {
-  const { id, done, text } = props;
-  const dispatch = useDispatch();
-  const { currentDay, currentMonth, currentYear } = useSelector(state => ({
-    currentDay: state.date.currentDay,
-    currentMonth: state.date.currentMonth,
-    currentYear: state.date.currentYear
-  }));
-  const filteredTodos = (currentDay, currentMonth, currentYear) =>
-    dispatch(todos(currentDay, currentMonth, currentYear));
-
-  const _toggleTodo = id => dispatch(toggleTodo(id));
-  const _removeTodo = id => dispatch(removeTodo(id));
-  const handleToggle = () => {
-    _toggleTodo({
-      id: id
-    });
-    filteredTodos({
-      currentDay: currentDay,
-      currentMonth: currentMonth,
-      currentYear: currentYear
-    });
-    dispatch(
-      dayTodolist({ currentMonth: currentMonth - 1, currentYear: currentYear })
-    );
-  };
-  const handleRemove = () => {
-    _removeTodo({
-      id: id
-    });
-    filteredTodos({
-      currentDay: currentDay,
-      currentMonth: currentMonth,
-      currentYear: currentYear
-    });
-    dispatch(
-      dayTodolist({ currentMonth: currentMonth - 1, currentYear: currentYear })
-    );
-  };
+const TodoItem = ({ id, done, text, handleRemove, handleToggle }) => {
   return (
     <TodoItemBlock>
-      <CheckCircle onClick={handleToggle} done={done}>
+      <CheckCircle onClick={() => handleToggle(id)} done={done}>
         {done && <DoneIcon />}
       </CheckCircle>
       <Text done={done}>{text}</Text>
-      <Remove onClick={handleRemove}>
+      <Remove onClick={() => handleRemove(id)}>
         <DeleteIcon />
       </Remove>
     </TodoItemBlock>
   );
 };
+
+TodoItem.propTypes = {
+  id: PropTypes.number,
+  done: PropTypes.bool,
+  text: PropTypes.string,
+  handleRemove: PropTypes.func,
+  handleToggle: PropTypes.func
+};
+
+TodoItem.defaultProps = {
+  id: -1,
+  done: false,
+  text: "Item Text is null",
+  handleRemove: () => {
+    console.log("handleRemove is null");
+  },
+  handleToggle: () => {
+    console.log("handleToggle is null");
+  }
+};
+
 export default TodoItem;
