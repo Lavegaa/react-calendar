@@ -30,15 +30,15 @@ const TodoItemBlock = styled.div`
 `;
 
 const CheckCircle = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
   border: 1px solid #ced4da;
   font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
+  margin-right: 10px;
   cursor: pointer;
   ${props =>
     props.done &&
@@ -50,7 +50,8 @@ const CheckCircle = styled.div`
 
 const Text = styled.div`
   flex: 1;
-  font-size: 21px;
+  font-size: 16px;
+  font-weight: 700;
   color: #495057;
   ${props =>
     props.done &&

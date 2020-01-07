@@ -1,8 +1,8 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-
+import DoneIcon from "@material-ui/icons/Done";
 const borderColor = "#D5D5D5";
 
 const StyledCalendar = styled.div`
@@ -61,30 +61,91 @@ const StyledTd = styled.td`
   width: 80px;
   height: 80px;
   padding: 5px;
-  text-align: right;
   font-size: 14px;
   border-right: 1px solid ${borderColor};
   border-bottom: 1px solid ${borderColor};
-  &:first-child span {
+  &:first-child div {
     color: #cc3d3d;
   }
 
-  &:last-child span {
+  &:last-child div {
     color: #4641d9;
+  }
+`;
+
+const StyledDay = styled.div`
+  float: right;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  & div {
+    margin-top: 2px;
+  }
+  ${props =>
+    props.today &&
+    css`
+      background: #38d9a9;
+      color: white;
+    `}
+`;
+
+const CheckCircle = styled.div`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  font-size: 20px;
+  vertical-align: middle;
+  ${props =>
+    props.done &&
+    css`
+      border: 1px solid #38d9a9;
+      color: #38d9a9;
+    `}
+`;
+
+const StyledSection = styled.div`
+  width: 100%;
+  margin-top: 4px;
+  text-align: left;
+  &:first-child {
+    margin-top: 28px;
+  }
+  & span {
+    margin-left: 6px;
+    vertical-align: middle;
+    color: black;
+  }
+  & path {
+    color: #38d9a9;
   }
 `;
 
 const CalendarTodo = ({ ToDay, DoDay }) => {
   return (
     <div>
-      to:{ToDay} do:{DoDay}
+      <StyledSection>
+        <CheckCircle />
+        <span>{ToDay}</span>
+      </StyledSection>
+      <StyledSection>
+        <CheckCircle done>
+          <DoneIcon fontSize="small" />
+        </CheckCircle>
+        <span>{DoDay}</span>
+      </StyledSection>
     </div>
   );
 };
 
 const ViewComponent = ({
+  today,
   currentMonth,
   currentYear,
+  fixMonth,
+  fixYear,
   previous,
   next,
   selectCalendar,
@@ -115,11 +176,21 @@ const ViewComponent = ({
         weekly.push(<StyledTd></StyledTd>);
         end = true;
       } else {
+        let check = false;
+        if (
+          today === innerDate &&
+          currentMonth === fixMonth &&
+          fixYear === currentYear
+        ) {
+          check = true;
+        }
         did = true;
         weekly.push(
           <StyledTd onClick={() => innerSelect()}>
-            <span>{date}</span>
-            {dayTodos[innerDate].to + dayTodos[innerDate].to !== 0 && (
+            <StyledDay today={check}>
+              <div>{date}</div>
+            </StyledDay>
+            {dayTodos[innerDate].to + dayTodos[innerDate].do !== 0 && (
               <CalendarTodo
                 ToDay={dayTodos[innerDate].to}
                 DoDay={dayTodos[innerDate].do}
@@ -156,14 +227,6 @@ const ViewComponent = ({
           <StyledTh>목요일</StyledTh>
           <StyledTh>금요일</StyledTh>
           <StyledTh>토요일</StyledTh>
-
-          {/* <StyledTh>SUN</StyledTh>
-          <StyledTh>MON</StyledTh>
-          <StyledTh>TUE</StyledTh>
-          <StyledTh>WED</StyledTh>
-          <StyledTh>WHU</StyledTh>
-          <StyledTh>FRI</StyledTh>
-          <StyledTh>SAT</StyledTh> */}
         </tr>
         {items}
       </StyledTable>

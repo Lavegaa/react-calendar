@@ -5,11 +5,12 @@ import { dayTodolist } from "../../store/modules/todolist";
 import ViewComponent from "./ViewComponent";
 
 const Calendar = () => {
-  let today = new Date();
-
-  let [currentMonth, setCurrentMonth] = useState(today.getMonth());
-  let [currentYear, setCurrentYear] = useState(today.getFullYear());
-
+  let date = new Date();
+  let today = date.getDate();
+  let [currentMonth, setCurrentMonth] = useState(date.getMonth());
+  let [currentYear, setCurrentYear] = useState(date.getFullYear());
+  const fixMonth = date.getMonth();
+  const fixYear = date.getFullYear();
   const dispatch = useDispatch();
   const selectCalendar = (currentDay, currentWeek, currentMonth, currentYear) =>
     dispatch(select(currentDay, currentWeek, currentMonth, currentYear));
@@ -38,6 +39,8 @@ const Calendar = () => {
       today={today}
       currentMonth={currentMonth}
       currentYear={currentYear}
+      fixMonth={fixMonth}
+      fixYear={fixYear}
       next={next}
       previous={previous}
       selectCalendar={selectCalendar}

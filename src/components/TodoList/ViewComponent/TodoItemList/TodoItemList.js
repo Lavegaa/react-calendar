@@ -10,6 +10,12 @@ const TodoListBlock = styled.div`
   overflow-y: auto;
 `;
 
+const StyledText = styled.div`
+  margin-top: 70px;
+  text-align: center;
+  font-weight: 700;
+`;
+
 const TodoItemList = ({
   filteredTodos,
   handleItemToggle,
@@ -29,7 +35,7 @@ const TodoItemList = ({
           />
         ))
       ) : (
-        <div>아직 할일이 없어요.</div>
+        <StyledText>아직 할일이 없어요.</StyledText>
       )}
     </TodoListBlock>
   );
