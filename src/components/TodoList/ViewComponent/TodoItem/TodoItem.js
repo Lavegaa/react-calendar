@@ -9,7 +9,7 @@ const Remove = styled.div`
   align-items: center;
   justify-content: center;
   color: #dee2e6;
-  font-size: 24px;
+  font-size: 13px;
   cursor: pointer;
   &:hover {
     color: #ff6bc6;
@@ -30,11 +30,11 @@ const TodoItemBlock = styled.div`
 `;
 
 const CheckCircle = styled.div`
-  width: 28px;
-  height: 28px;
-  border-radius: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
   border: 1px solid #ced4da;
-  font-size: 24px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,15 +59,16 @@ const Text = styled.div`
       color: #ced4da;
     `}
 `;
+
 const TodoItem = ({ id, done, text, handleRemove, handleToggle }) => {
   return (
     <TodoItemBlock>
       <CheckCircle onClick={() => handleToggle(id)} done={done}>
-        {done && <DoneIcon />}
+        {done && <DoneIcon fontSize="small" />}
       </CheckCircle>
       <Text done={done}>{text}</Text>
       <Remove onClick={() => handleRemove(id)}>
-        <DeleteIcon />
+        <DeleteIcon fontSize="small" />
       </Remove>
     </TodoItemBlock>
   );

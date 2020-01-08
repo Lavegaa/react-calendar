@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "store/rootReducer";
-
 import Calendar from "./components/Calendar";
 import TodoList from "./components/TodoList";
 

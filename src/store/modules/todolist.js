@@ -19,30 +19,6 @@ const initialState = {
   todos: [
     {
       id: 1,
-      year: 2019,
-      month: 12,
-      day: 1,
-      text: "리액트공부하기",
-      done: false
-    },
-    {
-      id: 2,
-      year: 2019,
-      month: 12,
-      day: 1,
-      text: "리액트공부하기22",
-      done: true
-    },
-    {
-      id: 3,
-      year: 2019,
-      month: 12,
-      day: 31,
-      text: "리액트공부하기24일",
-      done: false
-    },
-    {
-      id: 4,
       year: 2020,
       month: 1,
       day: 2,
@@ -51,7 +27,7 @@ const initialState = {
     }
   ],
   filteredTodos: [{}],
-  id: 5,
+  id: 2,
   dayTodos: [
     { start: 0 },
     { to: 0, do: 0 },
@@ -91,6 +67,7 @@ const initialState = {
 //reducer
 export default handleActions(
   {
+    //선택된 날짜의 todolist를 return 한다.
     [TODOS]: (state, action) => {
       return {
         ...state,
@@ -103,6 +80,7 @@ export default handleActions(
         })
       };
     },
+    //새로운 todo를 만든다.
     [CREATE_TODO]: (state, action) => {
       return {
         ...state,
@@ -110,6 +88,7 @@ export default handleActions(
         id: state.id + 1
       };
     },
+    //선택된 todo의 done값을 변경한다.
     [TOGGLE_TODO]: (state, action) => {
       return {
         ...state,
@@ -118,12 +97,14 @@ export default handleActions(
         )
       };
     },
+    //선택된 todo를 제거한다.
     [REMOVE_TODO]: (state, action) => {
       return {
         ...state,
         todos: state.todos.filter(todo => todo.id !== action.payload.id)
       };
     },
+    //날짜별로 todo의 개수를 return한다.
     [DAY_DOTOLIST]: (state, action) => {
       const monthlyTodos = state.todos.filter(todo => {
         return (
@@ -131,7 +112,6 @@ export default handleActions(
           todo.year === action.payload.currentYear
         );
       });
-      console.log(monthlyTodos);
       const inner = [
         { start: 0 },
         { to: 0, do: 0 },

@@ -15,8 +15,8 @@ import TodoItemList from "./ViewComponent/TodoItemList";
 const TodoTemplateBlock = styled.div`
   display: flex;
   position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 위한 설정 */
-  width: 30%;
-  height: 80vh;
+  width: 25%;
+  height: 82vh;
   margin: 20px;
   padding: 20px;
   background-color: white;
@@ -28,7 +28,7 @@ const TodoTemplateBlock = styled.div`
 const TodoList = () => {
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
-
+  const dispatch = useDispatch();
   let {
     id,
     filteredTodos,
@@ -44,10 +44,10 @@ const TodoList = () => {
     currentYear: state.date.currentYear,
     currentWeek: state.date.currentWeek
   }));
-  const dispatch = useDispatch();
-
+  //
   const todos = (currentDay, currentMonth, currentYear) =>
     dispatch(actionTodos(currentDay, currentMonth, currentYear));
+
   useEffect(() => {
     dispatch(
       todos({
@@ -57,6 +57,7 @@ const TodoList = () => {
       })
     );
   }, [currentDay, currentMonth, currentYear]);
+
   //TodoItemList Component에 들어갈 함수들
   //todoItem의 done여부를 toggle한다.
   const handleItemToggle = id => {

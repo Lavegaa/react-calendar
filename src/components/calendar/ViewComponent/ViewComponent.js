@@ -8,7 +8,7 @@ const borderColor = "#D5D5D5";
 const StyledCalendar = styled.div`
   float: left;
   width: 50%;
-  margin: 20px;
+  margin: 0 20px 0 140px;
   padding: 20px;
   background-color: white;
   border-radius: 16px;
@@ -91,12 +91,12 @@ const StyledDay = styled.div`
 
 const CheckCircle = styled.div`
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   margin: 0;
-  border-radius: 10px;
+  border-radius: 7px;
   border: 1px solid #ced4da;
-  font-size: 20px;
+  font-size: 10px;
   vertical-align: middle;
   ${props =>
     props.done &&
@@ -132,7 +132,7 @@ const CalendarTodo = ({ ToDay, DoDay }) => {
       </StyledSection>
       <StyledSection>
         <CheckCircle done>
-          <DoneIcon fontSize="small" />
+          <DoneIcon style={{ fontSize: 15 }} />
         </CheckCircle>
         <span>{DoDay}</span>
       </StyledSection>

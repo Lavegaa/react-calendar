@@ -31,6 +31,7 @@ export default handleActions(
     [SELECTED_WEEK]: ({ currentWeek }) => ({ currentWeek: currentWeek }),
     [SELECTED_MONTH]: ({ currentMonth }) => ({ currentMonth: currentMonth }),
     [SELECTED_YEAR]: ({ currentYear }) => ({ currentYear: currentYear }),
+    //현재 날짜 state를 선택된 날짜로 수정한다.
     [SELECT]: (state, action) => {
       return {
         ...state,

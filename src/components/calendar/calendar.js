@@ -12,9 +12,10 @@ const Calendar = () => {
   const fixMonth = date.getMonth();
   const fixYear = date.getFullYear();
   const dispatch = useDispatch();
+
   const selectCalendar = (currentDay, currentWeek, currentMonth, currentYear) =>
     dispatch(select(currentDay, currentWeek, currentMonth, currentYear));
-
+  //날짜별 todolist를 달력에 그려준다.
   useEffect(() => {
     dispatch(
       dayTodolist({ currentMonth: currentMonth, currentYear: currentYear })
@@ -24,12 +25,12 @@ const Calendar = () => {
   const { dayTodos } = useSelector(state => ({
     dayTodos: state.todolist.dayTodos
   }));
-
+  //다음달로 이동한다.
   const next = () => {
     setCurrentYear(currentMonth === 11 ? currentYear + 1 : currentYear);
     setCurrentMonth((currentMonth + 1) % 12);
   };
-
+  //이전달로 이동한다.
   const previous = () => {
     setCurrentYear(currentMonth === 0 ? currentYear - 1 : currentYear);
     setCurrentMonth(currentMonth === 0 ? 11 : currentMonth - 1);
