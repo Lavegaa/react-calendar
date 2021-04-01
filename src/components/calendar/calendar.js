@@ -20,10 +20,10 @@ const Calendar = () => {
     dispatch(
       dayTodolist({ currentMonth: currentMonth, currentYear: currentYear })
     );
-  }, [currentMonth, currentYear]);
+  }, [dispatch, currentMonth, currentYear]);
 
-  const { dayTodos } = useSelector(state => ({
-    dayTodos: state.todolist.dayTodos
+  const { dayTodos } = useSelector((state) => ({
+    dayTodos: state.todolist.dayTodos,
   }));
   //다음달로 이동한다.
   const next = () => {

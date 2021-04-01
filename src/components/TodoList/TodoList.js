@@ -5,7 +5,7 @@ import {
   createTodo,
   dayTodolist,
   toggleTodo,
-  removeTodo
+  removeTodo,
 } from "../../store/modules/todolist";
 import styled from "styled-components";
 import TodoHead from "./ViewComponent/TodoHead";
@@ -35,14 +35,14 @@ const TodoList = () => {
     currentDay,
     currentMonth,
     currentYear,
-    currentWeek
-  } = useSelector(state => ({
+    currentWeek,
+  } = useSelector((state) => ({
     id: state.todolist.id,
     filteredTodos: state.todolist.filteredTodos,
     currentDay: state.date.currentDay,
     currentMonth: state.date.currentMonth,
     currentYear: state.date.currentYear,
-    currentWeek: state.date.currentWeek
+    currentWeek: state.date.currentWeek,
   }));
   //
   const todos = (currentDay, currentMonth, currentYear) =>
@@ -53,21 +53,21 @@ const TodoList = () => {
       todos({
         currentDay: currentDay,
         currentMonth: currentMonth,
-        currentYear: currentYear
+        currentYear: currentYear,
       })
     );
-  }, [currentDay, currentMonth, currentYear]);
+  }, [dispatch, todos, currentDay, currentMonth, currentYear]);
 
   //TodoItemList Component에 들어갈 함수들
   //todoItem의 done여부를 toggle한다.
-  const handleItemToggle = id => {
+  const handleItemToggle = (id) => {
     //toggle action으로 done을 수정, 업데이트 된 todo를 가져오고 캘린더에 ToDay와 DoDay를 수정한다.
     dispatch(toggleTodo({ id: id }));
     dispatch(
       todos({
         currentDay: currentDay,
         currentMonth: currentMonth,
-        currentYear: currentYear
+        currentYear: currentYear,
       })
     );
     dispatch(
@@ -75,14 +75,14 @@ const TodoList = () => {
     );
   };
   //TodoItem을 삭제한다.
-  const handleItemRemove = id => {
+  const handleItemRemove = (id) => {
     //remove action을 통해 해당 item을 삭제하고, 업데이트 된 todo를 가져오고 캘린더에 ToDay와 DoDay를 수정한다.
     dispatch(removeTodo({ id: id }));
     dispatch(
       todos({
         currentDay: currentDay,
         currentMonth: currentMonth,
-        currentYear: currentYear
+        currentYear: currentYear,
       })
     );
     dispatch(
@@ -95,7 +95,7 @@ const TodoList = () => {
     setOpen(!open);
   };
   //Input에서의 값을 업데이트 해준다.
-  const handleCreateChange = e => setValue(e.target.value);
+  const handleCreateChange = (e) => setValue(e.target.value);
   //생성될 todo의 객체
   const todo = {
     id: id,
@@ -103,10 +103,10 @@ const TodoList = () => {
     month: currentMonth,
     day: currentDay,
     text: value,
-    done: false
+    done: false,
   };
   //입력된 정보를 바탕으로 todo를 생성한다.
-  const handleCreateSubmit = e => {
+  const handleCreateSubmit = (e) => {
     //create action을 통해 todo를 생성하고, 업데이트 된 todo를 가져오고 캘린더에 ToDay와 DoDay를 수정한다.
     e.preventDefault(); //새로고침 방지
     dispatch(createTodo({ todo: todo }));
@@ -114,7 +114,7 @@ const TodoList = () => {
       todos({
         currentDay: currentDay,
         currentMonth: currentMonth,
-        currentYear: currentYear
+        currentYear: currentYear,
       })
     );
     dispatch(

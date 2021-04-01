@@ -23,8 +23,8 @@ const initialState = {
       month: 1,
       day: 2,
       text: "리액트공부하기2020년",
-      done: false
-    }
+      done: false,
+    },
   ],
   filteredTodos: [{}],
   id: 2,
@@ -60,8 +60,8 @@ const initialState = {
     { to: 0, do: 0 },
     { to: 0, do: 0 },
     { to: 0, do: 0 },
-    { to: 0, do: 0 }
-  ]
+    { to: 0, do: 0 },
+  ],
 };
 
 //reducer
@@ -71,13 +71,13 @@ export default handleActions(
     [TODOS]: (state, action) => {
       return {
         ...state,
-        filteredTodos: state.todos.filter(todo => {
+        filteredTodos: state.todos.filter((todo) => {
           return (
             todo.day === action.payload.currentDay &&
             todo.month === action.payload.currentMonth &&
             todo.year === action.payload.currentYear
           );
-        })
+        }),
       };
     },
     //새로운 todo를 만든다.
@@ -85,28 +85,28 @@ export default handleActions(
       return {
         ...state,
         todos: state.todos.concat(action.payload.todo),
-        id: state.id + 1
+        id: state.id + 1,
       };
     },
     //선택된 todo의 done값을 변경한다.
     [TOGGLE_TODO]: (state, action) => {
       return {
         ...state,
-        todos: state.todos.map(todo =>
+        todos: state.todos.map((todo) =>
           todo.id === action.payload.id ? { ...todo, done: !todo.done } : todo
-        )
+        ),
       };
     },
     //선택된 todo를 제거한다.
     [REMOVE_TODO]: (state, action) => {
       return {
         ...state,
-        todos: state.todos.filter(todo => todo.id !== action.payload.id)
+        todos: state.todos.filter((todo) => todo.id !== action.payload.id),
       };
     },
     //날짜별로 todo의 개수를 return한다.
     [DAY_DOTOLIST]: (state, action) => {
-      const monthlyTodos = state.todos.filter(todo => {
+      const monthlyTodos = state.todos.filter((todo) => {
         return (
           todo.month === action.payload.currentMonth + 1 &&
           todo.year === action.payload.currentYear
@@ -144,20 +144,20 @@ export default handleActions(
         { to: 0, do: 0 },
         { to: 0, do: 0 },
         { to: 0, do: 0 },
-        { to: 0, do: 0 }
+        { to: 0, do: 0 },
       ];
-      monthlyTodos.map(todo => {
-        if (todo.done === true) {
-          inner[todo.day].do = inner[todo.day].do + 1;
-        } else {
-          inner[todo.day].to = inner[todo.day].to + 1;
-        }
-      });
+      // monthlyTodos.map((todo) => {
+      //   if (todo.done === true) {
+      //     inner[todo.day].do = inner[todo.day].do + 1;
+      //   } else {
+      //     inner[todo.day].to = inner[todo.day].to + 1;
+      //   }
+      // });
       return {
         ...state,
-        dayTodos: inner
+        dayTodos: inner,
       };
-    }
+    },
   },
   initialState
 );
